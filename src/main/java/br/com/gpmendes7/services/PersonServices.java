@@ -1,9 +1,10 @@
 package br.com.gpmendes7.services;
 
 import br.com.gpmendes7.controllers.TestLogController;
-import br.com.gpmendes7.data.dto.PersonDTO;
+import br.com.gpmendes7.data.dto.v1.PersonDTO;
+import br.com.gpmendes7.data.dto.v2.PersonDTOV2;
 import br.com.gpmendes7.exception.ResourceNotFoundException;
-import br.com.gpmendes7.mapper.ObjectMapper;
+import br.com.gpmendes7.mapper.custom.PersonMapper;
 import br.com.gpmendes7.model.Person;
 import br.com.gpmendes7.repository.PersonRepository;
 import org.slf4j.Logger;
@@ -12,7 +13,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.concurrent.atomic.AtomicLong;
 
 import static br.com.gpmendes7.mapper.ObjectMapper.parseListObjects;
 import static br.com.gpmendes7.mapper.ObjectMapper.parseObject;
@@ -20,11 +20,13 @@ import static br.com.gpmendes7.mapper.ObjectMapper.parseObject;
 @Service
 public class PersonServices {
 
-    private final AtomicLong counter = new AtomicLong();
     private Logger logger = LoggerFactory.getLogger(TestLogController.class.getName());
 
     @Autowired
     PersonRepository repository;
+
+    @Autowired
+    PersonMapper converter;
 
     public List<PersonDTO> findAll() {
         logger.info("Finding all People!");
@@ -42,6 +44,12 @@ public class PersonServices {
         logger.info("Creating one Person!");
         var entity = parseObject(person, Person.class);
         return parseObject(repository.save(entity), PersonDTO.class);
+    }
+
+    public PersonDTOV2 createV2(PersonDTOV2 person) {
+        logger.info("Creating one Person V2!");
+        var entity = converter.convertDTOtoEntity(person);
+        return converter.convertEntityToDTO(repository.save(entity));
     }
 
     public PersonDTO update(PersonDTO person) {

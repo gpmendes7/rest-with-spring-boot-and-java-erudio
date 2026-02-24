@@ -1,6 +1,6 @@
 package br.com.gpmendes7.unitetests.mapper;
 
-import br.com.gpmendes7.data.dto.PersonDTO;
+import br.com.gpmendes7.data.dto.v1.PersonDTO;
 import br.com.gpmendes7.model.Person;
 import br.com.gpmendes7.unitetests.mapper.mocks.MockPerson;
 import org.junit.jupiter.api.BeforeEach;
