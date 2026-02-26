@@ -1,17 +1,31 @@
 package br.com.gpmendes7.data.dto.v1;
 
+import com.fasterxml.jackson.annotation.JsonFilter;
+
 import java.io.Serializable;
 import java.util.Objects;
 
+//@JsonPropertyOrder({"id", "address", "first_name", "last_name", "gender"})
+@JsonFilter("PersonFilter")
 public class PersonDTO implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
     private Long id;
+   //@JsonProperty("first_name")
     private String firstName;
+    //@JsonProperty("last_name")
+    //@JsonInclude(JsonInclude.Include.NON_NULL)
     private String lastName;
+  //  @JsonInclude(JsonInclude.Include.NON_EMPTY)
+  //  private String phoneNumber;
+   // @JsonFormat(pattern = "dd/MM/yyyy")
+   // private Date birthDay;
     private String address;
+   // @JsonIgnore
+   // @JsonSerialize(using = GenderSerializer.class)
     private String gender;
+   // private String sensitiveData;
 
     public PersonDTO() {
     }
@@ -58,8 +72,8 @@ public class PersonDTO implements Serializable {
 
     @Override
     public boolean equals(Object o) {
-        if (!(o instanceof PersonDTO person)) return false;
-        return Objects.equals(id, person.id) && Objects.equals(firstName, person.firstName) && Objects.equals(lastName, person.lastName) && Objects.equals(address, person.address) && Objects.equals(gender, person.gender);
+        if (!(o instanceof PersonDTO personDTO)) return false;
+        return Objects.equals(id, personDTO.id) && Objects.equals(firstName, personDTO.firstName) && Objects.equals(lastName, personDTO.lastName) && Objects.equals(address, personDTO.address) && Objects.equals(gender, personDTO.gender);
     }
 
     @Override
