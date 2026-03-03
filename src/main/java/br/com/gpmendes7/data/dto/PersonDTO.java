@@ -1,4 +1,4 @@
-package br.com.gpmendes7.data.dto.v1;
+package br.com.gpmendes7.data.dto;
 
 import org.springframework.hateoas.RepresentationModel;
 

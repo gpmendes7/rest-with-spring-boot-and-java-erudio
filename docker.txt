@@ -1,0 +1,13 @@
+docker --version
+
+docker run hello-world
+
+docker run -it ubuntu bash
+
+docker image ls
+
+docoker images
+
+docker ps
+
+docker container ls

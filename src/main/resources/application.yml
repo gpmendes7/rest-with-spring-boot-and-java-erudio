@@ -19,3 +19,7 @@ logging:
   level:
     # root: WARN
     br.com.gpmendes7: DEBUG
+spring-doc:
+  paths-to-match: /api/**/v1/**
+  swagger-ui:
+    use-root-path: true
