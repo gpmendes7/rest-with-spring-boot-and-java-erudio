@@ -1,4 +1,4 @@
-package br.com.gpmendes7.services;
+package br.com.gpmendes7.unittests.services;
 
 import br.com.gpmendes7.controllers.BookController;
 import br.com.gpmendes7.data.dto.BookDTO;

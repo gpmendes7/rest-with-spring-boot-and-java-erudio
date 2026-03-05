@@ -11,3 +11,9 @@ docoker images
 docker ps
 
 docker container ls
+
+docker tag hello-world gpm777/hello-world:0.0.1-SNAPSHOT
+
+docker login docker.io
+
+docker push gpm777/hello-world:0.0.1-SNAPSHOT

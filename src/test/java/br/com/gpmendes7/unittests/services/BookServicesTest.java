@@ -1,10 +1,10 @@
-package br.com.gpmendes7.services;
+package br.com.gpmendes7.unittests.services;
 
 import br.com.gpmendes7.data.dto.BookDTO;
 import br.com.gpmendes7.exception.RequiredObjectIsNullException;
 import br.com.gpmendes7.model.Book;
 import br.com.gpmendes7.repository.BookRepository;
-import br.com.gpmendes7.unitetests.mapper.mocks.MockBook;
+import br.com.gpmendes7.unittests.mapper.mocks.MockBook;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;

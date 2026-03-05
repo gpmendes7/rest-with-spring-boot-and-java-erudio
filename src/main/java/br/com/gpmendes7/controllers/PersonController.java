@@ -2,7 +2,7 @@ package br.com.gpmendes7.controllers;
 
 import br.com.gpmendes7.controllers.docs.PersonControllerDocs;
 import br.com.gpmendes7.data.dto.PersonDTO;
-import br.com.gpmendes7.services.PersonServices;
+import br.com.gpmendes7.unittests.services.PersonServices;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+//@CrossOrigin(origins = "http://localhost:8080")
 @RestController
 @RequestMapping("/api/person/v1")
 @Tag(name = "People", description = "Endpoints for Managing People")
@@ -27,6 +28,7 @@ public class PersonController implements PersonControllerDocs {
         return service.findAll();
     }
 
+    //@CrossOrigin(origins = "http://localhost:8080")
     @GetMapping(value = "/{id}", produces = {MediaType.APPLICATION_JSON_VALUE,
             MediaType.APPLICATION_XML_VALUE,
             MediaType.APPLICATION_YAML_VALUE})
@@ -35,6 +37,7 @@ public class PersonController implements PersonControllerDocs {
         return service.findById(id);
     }
 
+    //@CrossOrigin(origins = {"http://localhost:8080", "https://www.erudio.com.br"})
     @PostMapping(
             consumes = {
                     MediaType.APPLICATION_JSON_VALUE,

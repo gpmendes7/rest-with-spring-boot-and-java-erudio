@@ -1,4 +1,4 @@
-package br.com.gpmendes7.unitetests.mapper.mocks;
+package br.com.gpmendes7.unittests.mapper.mocks;
 
 import br.com.gpmendes7.data.dto.BookDTO;
 import br.com.gpmendes7.model.Book;
