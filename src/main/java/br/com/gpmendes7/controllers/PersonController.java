@@ -2,7 +2,7 @@ package br.com.gpmendes7.controllers;
 
 import br.com.gpmendes7.controllers.docs.PersonControllerDocs;
 import br.com.gpmendes7.data.dto.PersonDTO;
-import br.com.gpmendes7.unittests.services.PersonServices;
+import br.com.gpmendes7.services.PersonServices;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
@@ -20,18 +20,22 @@ public class PersonController implements PersonControllerDocs {
     @Autowired
     private PersonServices service = new PersonServices();
 
-    @GetMapping(produces = {MediaType.APPLICATION_JSON_VALUE,
-            MediaType.APPLICATION_XML_VALUE,
-            MediaType.APPLICATION_YAML_VALUE})
+    @GetMapping(
+            produces = {
+                    MediaType.APPLICATION_JSON_VALUE,
+                    MediaType.APPLICATION_XML_VALUE,
+                    MediaType.APPLICATION_YAML_VALUE})
     @Override
     public List<PersonDTO> findAll() {
         return service.findAll();
     }
 
     //@CrossOrigin(origins = "http://localhost:8080")
-    @GetMapping(value = "/{id}", produces = {MediaType.APPLICATION_JSON_VALUE,
-            MediaType.APPLICATION_XML_VALUE,
-            MediaType.APPLICATION_YAML_VALUE})
+    @GetMapping(value = "/{id}",
+            produces = {
+                MediaType.APPLICATION_JSON_VALUE,
+                MediaType.APPLICATION_XML_VALUE,
+                MediaType.APPLICATION_YAML_VALUE})
     @Override
     public PersonDTO findById(@PathVariable("id") Long id) {
         return service.findById(id);
@@ -64,6 +68,16 @@ public class PersonController implements PersonControllerDocs {
     @Override
     public PersonDTO update(@RequestBody PersonDTO person) {
         return service.update(person);
+    }
+
+    @PatchMapping(value = "/{id}",
+            produces = {
+                MediaType.APPLICATION_JSON_VALUE,
+                MediaType.APPLICATION_XML_VALUE,
+                MediaType.APPLICATION_YAML_VALUE})
+    @Override
+    public PersonDTO disablePerson(@PathVariable("id") Long id) {
+        return service.disablePerson(id);
     }
 
     @DeleteMapping(value = "/{id}")

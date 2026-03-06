@@ -2,7 +2,7 @@ package br.com.gpmendes7.controllers;
 
 import br.com.gpmendes7.controllers.docs.BookControllerDocs;
 import br.com.gpmendes7.data.dto.BookDTO;
-import br.com.gpmendes7.unittests.services.BookServices;
+import br.com.gpmendes7.services.BookServices;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;

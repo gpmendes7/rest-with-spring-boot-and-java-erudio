@@ -4,6 +4,7 @@ import br.com.gpmendes7.data.dto.BookDTO;
 import br.com.gpmendes7.exception.RequiredObjectIsNullException;
 import br.com.gpmendes7.model.Book;
 import br.com.gpmendes7.repository.BookRepository;
+import br.com.gpmendes7.services.BookServices;
 import br.com.gpmendes7.unittests.mapper.mocks.MockBook;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -94,6 +95,7 @@ class BookServicesTest {
 
     @Test
     void create() {
+        /*
         Book Book = input.mockEntity(1);
         Book persisted = Book;
         persisted.setId(1L);
@@ -101,6 +103,13 @@ class BookServicesTest {
         BookDTO dto = input.mockDTO(1);
 
         when(repository.save(Book)).thenReturn(persisted);
+         */
+
+        BookDTO dto = input.mockDTO(1);
+
+        Book entity = input.mockEntity(1);
+
+        when(repository.save(any(Book.class))).thenReturn(entity);
 
         var result = service.create(dto);
 
