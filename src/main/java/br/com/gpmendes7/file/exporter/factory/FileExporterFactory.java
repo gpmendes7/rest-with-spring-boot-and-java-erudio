@@ -4,6 +4,7 @@ import br.com.gpmendes7.exception.BadRequestException;
 import br.com.gpmendes7.file.exporter.MediaTypes;
 import br.com.gpmendes7.file.exporter.contract.FileExporter;
 import br.com.gpmendes7.file.exporter.impl.CsvExporter;
+import br.com.gpmendes7.file.exporter.impl.PdfExporter;
 import br.com.gpmendes7.file.exporter.impl.XlsxExporter;
 import br.com.gpmendes7.file.importer.contract.FileImporter;
 import br.com.gpmendes7.file.importer.impl.CsvImporter;
@@ -29,6 +30,8 @@ public class FileExporterFactory {
         } else if(acceptHeader.equalsIgnoreCase(MediaTypes.APPLICATION_CSV_VALUE)) {
             return context.getBean(CsvExporter.class);
             // return new CsvImporter();
+        } else if(acceptHeader.equalsIgnoreCase(MediaTypes.APPLICATION_PDF_VALUE)) {
+            return context.getBean(PdfExporter.class);
         } else {
             throw new BadRequestException("Invalid File Format!");
         }
