@@ -1,4 +1,4 @@
-package br.com.gpmendes7.integrationtests.dto.wrappers.xml;
+package br.com.gpmendes7.integrationtests.dto.wrappers.xmlandyaml;
 
 import br.com.gpmendes7.integrationtests.dto.PersonDTO;
 import jakarta.xml.bind.annotation.XmlElement;

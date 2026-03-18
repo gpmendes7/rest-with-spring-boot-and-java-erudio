@@ -3,7 +3,7 @@ package br.com.gpmendes7.integrationtests.controllers.withyaml;
 import br.com.gpmendes7.config.TestConfigs;
 import br.com.gpmendes7.integrationtests.controllers.withyaml.mapper.YAMLMapper;
 import br.com.gpmendes7.integrationtests.dto.PersonDTO;
-import br.com.gpmendes7.integrationtests.dto.wrappers.xml.PagedModelPerson;
+import br.com.gpmendes7.integrationtests.dto.wrappers.xmlandyaml.PagedModelPerson;
 import br.com.gpmendes7.integrationtests.testcontainers.AbstractIntegrationTest;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import io.restassured.builder.RequestSpecBuilder;
@@ -18,7 +18,6 @@ import org.junit.jupiter.api.*;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
 
-import java.util.Arrays;
 import java.util.List;
 
 import static io.restassured.RestAssured.given;
