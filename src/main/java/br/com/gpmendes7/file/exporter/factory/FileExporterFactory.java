@@ -2,13 +2,10 @@ package br.com.gpmendes7.file.exporter.factory;
 
 import br.com.gpmendes7.exception.BadRequestException;
 import br.com.gpmendes7.file.exporter.MediaTypes;
-import br.com.gpmendes7.file.exporter.contract.FileExporter;
+import br.com.gpmendes7.file.exporter.contract.PersonExporter;
 import br.com.gpmendes7.file.exporter.impl.CsvExporter;
 import br.com.gpmendes7.file.exporter.impl.PdfExporter;
 import br.com.gpmendes7.file.exporter.impl.XlsxExporter;
-import br.com.gpmendes7.file.importer.contract.FileImporter;
-import br.com.gpmendes7.file.importer.impl.CsvImporter;
-import br.com.gpmendes7.file.importer.impl.XlsxImporter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,7 +20,7 @@ public class FileExporterFactory {
     @Autowired
     private ApplicationContext context;
 
-    public FileExporter getExporter(String acceptHeader) throws Exception {
+    public PersonExporter getExporter(String acceptHeader) throws Exception {
         if(acceptHeader.equalsIgnoreCase(MediaTypes.APPLICATION_XLSX_VALUE)) {
             return context.getBean(XlsxExporter.class);
             // return new XlsxImporter();

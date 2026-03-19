@@ -6,7 +6,7 @@ import br.com.gpmendes7.exception.BadRequestException;
 import br.com.gpmendes7.exception.FileStorageException;
 import br.com.gpmendes7.exception.RequiredObjectIsNullException;
 import br.com.gpmendes7.exception.ResourceNotFoundException;
-import br.com.gpmendes7.file.exporter.contract.FileExporter;
+import br.com.gpmendes7.file.exporter.contract.PersonExporter;
 import br.com.gpmendes7.file.exporter.factory.FileExporterFactory;
 import br.com.gpmendes7.file.importer.contract.FileImporter;
 import br.com.gpmendes7.file.importer.factory.FileImporterFactory;
@@ -76,8 +76,23 @@ public class PersonServices {
                 .getContent();
 
         try {
-            FileExporter exporter = this.exporter.getExporter(acceptHeader);
-            return exporter.exportFile(people);
+            PersonExporter exporter = this.exporter.getExporter(acceptHeader);
+            return exporter.exportPeople(people);
+        } catch(Exception e){
+            throw new RuntimeException("Error during file export!", e);
+        }
+    }
+
+    public Resource exportPerson(Long id, String acceptHeader) {
+        logger.info("Exporting data of one Person!");
+
+        var person = repository.findById(id)
+                .map(entity -> parseObject(entity, PersonDTO.class))
+                .orElseThrow(() -> new ResourceNotFoundException("No records found for this ID!"));
+
+        try {
+            PersonExporter exporter = this.exporter.getExporter(acceptHeader);
+            return exporter.exportPerson(person);
         } catch(Exception e){
             throw new RuntimeException("Error during file export!", e);
         }

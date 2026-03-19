@@ -1,7 +1,7 @@
 package br.com.gpmendes7.file.exporter.impl;
 
 import br.com.gpmendes7.data.dto.PersonDTO;
-import br.com.gpmendes7.file.exporter.contract.FileExporter;
+import br.com.gpmendes7.file.exporter.contract.PersonExporter;
 import org.apache.poi.ss.usermodel.*;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.springframework.core.io.ByteArrayResource;
@@ -12,10 +12,10 @@ import java.io.ByteArrayOutputStream;
 import java.util.List;
 
 @Component
-public class XlsxExporter  implements FileExporter {
+public class XlsxExporter  implements PersonExporter {
 
     @Override
-    public Resource exportFile(List<PersonDTO> people) throws Exception {
+    public Resource exportPeople(List<PersonDTO> people) throws Exception {
         try(Workbook workbook = new XSSFWorkbook()) {
             Sheet sheet = workbook.createSheet("People");
 
@@ -24,7 +24,7 @@ public class XlsxExporter  implements FileExporter {
             for(int i = 0; i < headers.length; i++) {
                 Cell cell = headerRow.createCell(i);
                 cell.setCellValue(headers[i]);
-                cell.setCellStyle(createCellStyle(workbook));
+                cell.setCellStyle(createHeaderCellStyle(workbook));
             }
 
             int rowIndex = 1;
@@ -49,7 +49,12 @@ public class XlsxExporter  implements FileExporter {
         }
     }
 
-    private CellStyle createCellStyle(Workbook workbook) {
+    @Override
+    public Resource exportPerson(PersonDTO person) throws Exception {
+        return null;
+    }
+
+    private CellStyle createHeaderCellStyle(Workbook workbook) {
         CellStyle style = workbook.createCellStyle();
         Font font = workbook.createFont();
         font.setBold(true);

@@ -8,7 +8,6 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.Resource;
-import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
@@ -122,6 +121,21 @@ public class PersonController implements PersonControllerDocs {
     @Override
     public PersonDTO findById(@PathVariable("id") Long id) {
         return service.findById(id);
+    }
+
+    @GetMapping(value = "/export/{id}",
+            produces = {MediaType.APPLICATION_PDF_VALUE})
+    @Override
+    public ResponseEntity<Resource> export(@PathVariable("id")  Long id, HttpServletRequest request) {
+        String acceptHeader = request.getHeader(HttpHeaders.ACCEPT);
+        Resource file = service.exportPerson(id, acceptHeader);
+
+        return ResponseEntity.ok()
+                .contentType(MediaType.parseMediaType(acceptHeader))
+                .header(
+                        HttpHeaders.CONTENT_DISPOSITION,
+                        "attachment; filename=person.pdf")
+                .body(file);
     }
 
     //@CrossOrigin(origins = {"http://localhost:8080", "https://www.erudio.com.br"})
