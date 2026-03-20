@@ -1,7 +1,10 @@
 cors:
   originPatterns: http://localhost:8080,http://localhost:3000,https://www.erudio.com.br
 file:
-  upload-dir: /ws-cursospring/uploaddir
+  upload-dir: /Code/UploadDir
+email:
+  subject: "Default Subject"
+  message: "Default Message"
 spring:
   application:
     name: rest-with-spring-boot-and-java-erudio
@@ -17,16 +20,28 @@ spring:
       hibernate:
     show-sql: false
     open-in-view: false
+  mail:
+    host: smtp.gmail.com
+    port: 587
+    username: ${EMAIL_USERNAME}
+    password: ${EMAIL_PASSWORD}
+    properties:
+      mail.smtp.auth: true
+      mail.smtp.starttls.enable: true # Remova o 'd' de 'enabled'
+      mail.smtp.starttls.required: true
+      mail.smtp.ssl.trust: "*" # necessario por conta da interceptacao do ceritificado pelo antivirus (norton)
   servlet:
     multipart:
       enabled: true
       file-size-threshold: 2KB
       max-file-size: 200MB
-      max-request-size: 215MB
+      max-request-size: 215 MB
 logging:
   level:
+    root: INFO
+    # net.sf.jasperreports.engine.*: TRACE
     # root: WARN
-    br.com.gpmendes7: DEBUG
+    # br.com.erudio: DEBUG
 spring-doc:
   paths-to-match: /api/**/v1/**
   swagger-ui:
