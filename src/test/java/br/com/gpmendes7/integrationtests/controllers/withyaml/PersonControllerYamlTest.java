@@ -2,7 +2,9 @@ package br.com.gpmendes7.integrationtests.controllers.withyaml;
 
 import br.com.gpmendes7.config.TestConfigs;
 import br.com.gpmendes7.integrationtests.controllers.withyaml.mapper.YAMLMapper;
+import br.com.gpmendes7.integrationtests.dto.AccountCredentialsDTO;
 import br.com.gpmendes7.integrationtests.dto.PersonDTO;
+import br.com.gpmendes7.integrationtests.dto.TokenDTO;
 import br.com.gpmendes7.integrationtests.dto.wrappers.xmlandyaml.PagedModelPerson;
 import br.com.gpmendes7.integrationtests.testcontainers.AbstractIntegrationTest;
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -31,25 +33,55 @@ class PersonControllerYamlTest extends AbstractIntegrationTest {
     private static YAMLMapper yamlMapper;
 
     private static PersonDTO person;
+    private static TokenDTO tokenDto;
 
     @BeforeAll
     static void setUp() {
         yamlMapper = new YAMLMapper();
         person = new PersonDTO();
+        tokenDto = new TokenDTO();
+    }
+
+    @Test
+    @Order(0)
+    void signIn() {
+        AccountCredentialsDTO credentials = new AccountCredentialsDTO("leandro", "admin123");
+
+        tokenDto = given() .config(
+                        RestAssuredConfig.config()
+                                .encoderConfig(
+                                        EncoderConfig.encoderConfig()
+                                                .encodeContentTypeAs(MediaType.APPLICATION_YAML_VALUE, ContentType.TEXT))
+                )
+                .basePath("/auth/signin")
+                    .port(TestConfigs.SERVER_PORT)
+                    .contentType(MediaType.APPLICATION_YAML_VALUE)
+                    .accept(MediaType.APPLICATION_YAML_VALUE)
+                .body(credentials, yamlMapper)
+                    .when()
+                .post()
+                    .then()
+                    .statusCode(200)
+                        .extract()
+                        .body()
+                        .as(TokenDTO.class, yamlMapper);
+
+        specification = new RequestSpecBuilder()
+                .addHeader(TestConfigs.HEADER_PARAM_ORIGIN, TestConfigs.ORIGIN_ERUDIO)
+                .addHeader(TestConfigs.HEADER_PARAM_AUTHOTIZATION, "Bearer " + tokenDto.getAccessToken())
+                    .setBasePath("/api/person/v1")
+                .setPort(TestConfigs.SERVER_PORT)
+                    .addFilter(new RequestLoggingFilter(LogDetail.ALL))
+                .build();
+
+        assertNotNull(tokenDto.getAccessToken());
+        assertNotNull(tokenDto.getRefreshToken());
     }
 
     @Test
     @Order(1)
     void createTest() throws JsonProcessingException {
         mockPerson();
-
-        specification = new RequestSpecBuilder()
-                .addHeader(TestConfigs.HEADER_PARAM_ORIGIN, TestConfigs.ORIGIN_ERUDIO)
-                .setBasePath("/api/person/v1")
-                .setPort(TestConfigs.SERVER_PORT)
-                .addFilter(new RequestLoggingFilter(LogDetail.ALL))
-                .addFilter(new ResponseLoggingFilter(LogDetail.ALL))
-                .build();
 
         var createdPerson = given()
                 .config(
@@ -253,5 +285,7 @@ class PersonControllerYamlTest extends AbstractIntegrationTest {
         person.setAddress("Helsinki - Finland");
         person.setGender("Male");
         person.setEnabled(true);
+        person.setProfileUrl("https://pub.erudio.com.br/meus-cursos");
+        person.setPhotoUrl("https://pub.erudio.com.br/meus-cursos");
     }
 }

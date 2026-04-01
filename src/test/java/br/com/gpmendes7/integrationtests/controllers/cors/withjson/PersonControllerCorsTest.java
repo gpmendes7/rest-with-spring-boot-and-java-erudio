@@ -11,7 +11,6 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import io.restassured.builder.RequestSpecBuilder;
 import io.restassured.filter.log.LogDetail;
 import io.restassured.filter.log.RequestLoggingFilter;
-import io.restassured.filter.log.ResponseLoggingFilter;
 import io.restassured.specification.RequestSpecification;
 import org.junit.jupiter.api.*;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -40,14 +39,14 @@ class PersonControllerCorsTest extends AbstractIntegrationTest {
     }
 
     @Test
-    @Order(1)
+    @Order(0)
     void signIn() {
         AccountCredentialsDTO credentials = new AccountCredentialsDTO("leandro", "admin123");
 
         tokenDto = given()
                 .basePath("/auth/signin")
                     .port(TestConfigs.SERVER_PORT)
-                     .contentType(MediaType.APPLICATION_JSON_VALUE)
+                    .contentType(MediaType.APPLICATION_JSON_VALUE)
                 .body(credentials)
                     .when()
                 .post()
@@ -61,9 +60,8 @@ class PersonControllerCorsTest extends AbstractIntegrationTest {
         assertNotNull(tokenDto.getRefreshToken());
     }
 
-
     @Test
-    @Order(2)
+    @Order(1)
     void create() throws JsonProcessingException {
         mockPerson();
 
@@ -73,7 +71,6 @@ class PersonControllerCorsTest extends AbstractIntegrationTest {
                     .setBasePath("/api/person/v1")
                 .setPort(TestConfigs.SERVER_PORT)
                     .addFilter(new RequestLoggingFilter(LogDetail.ALL))
-                    .addFilter(new ResponseLoggingFilter(LogDetail.ALL))
                 .build();
 
         var content = given(specification)
@@ -106,7 +103,7 @@ class PersonControllerCorsTest extends AbstractIntegrationTest {
     }
 
     @Test
-    @Order(3)
+    @Order(2)
     void createWithWrongOrigin() throws JsonProcessingException {
         specification = new RequestSpecBuilder()
                 .addHeader(TestConfigs.HEADER_PARAM_ORIGIN, TestConfigs.ORIGIN_SEMERU)
@@ -131,7 +128,7 @@ class PersonControllerCorsTest extends AbstractIntegrationTest {
     }
 
     @Test
-    @Order(4)
+    @Order(3)
     void findById() throws JsonProcessingException {
         specification = new RequestSpecBuilder()
                 .addHeader(TestConfigs.HEADER_PARAM_ORIGIN, TestConfigs.ORIGIN_LOCAL)
@@ -171,7 +168,7 @@ class PersonControllerCorsTest extends AbstractIntegrationTest {
     }
 
     @Test
-    @Order(5)
+    @Order(4)
     void findByIdWithWrongOrigin() throws JsonProcessingException {
         specification = new RequestSpecBuilder()
                 .addHeader(TestConfigs.HEADER_PARAM_ORIGIN, TestConfigs.ORIGIN_SEMERU)
