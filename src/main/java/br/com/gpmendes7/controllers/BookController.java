@@ -2,7 +2,7 @@ package br.com.gpmendes7.controllers;
 
 import br.com.gpmendes7.controllers.docs.BookControllerDocs;
 import br.com.gpmendes7.data.dto.BookDTO;
-import br.com.gpmendes7.services.BookServices;
+import br.com.gpmendes7.services.BookService;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
@@ -20,7 +20,7 @@ import org.springframework.web.bind.annotation.*;
 public class BookController implements BookControllerDocs {
 
     @Autowired
-    private BookServices service = new BookServices();
+    private BookService service = new BookService();
 
     @GetMapping(produces = {MediaType.APPLICATION_JSON_VALUE,
             MediaType.APPLICATION_XML_VALUE,

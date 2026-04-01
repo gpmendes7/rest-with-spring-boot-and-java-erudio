@@ -3,7 +3,7 @@ package br.com.gpmendes7.controllers;
 import br.com.gpmendes7.controllers.docs.PersonControllerDocs;
 import br.com.gpmendes7.data.dto.PersonDTO;
 import br.com.gpmendes7.file.exporter.MediaTypes;
-import br.com.gpmendes7.services.PersonServices;
+import br.com.gpmendes7.services.PersonService;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,7 +29,7 @@ import java.util.Map;
 public class PersonController implements PersonControllerDocs {
 
     @Autowired
-    private PersonServices service = new PersonServices();
+    private PersonService service = new PersonService();
 
     @GetMapping(
             produces = {

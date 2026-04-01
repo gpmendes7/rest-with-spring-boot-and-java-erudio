@@ -4,7 +4,7 @@ import br.com.gpmendes7.data.dto.BookDTO;
 import br.com.gpmendes7.exception.RequiredObjectIsNullException;
 import br.com.gpmendes7.model.Book;
 import br.com.gpmendes7.repository.BookRepository;
-import br.com.gpmendes7.services.BookServices;
+import br.com.gpmendes7.services.BookService;
 import br.com.gpmendes7.unittests.mapper.mocks.MockBook;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Disabled;
@@ -25,12 +25,12 @@ import static org.mockito.Mockito.*;
 
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 @ExtendWith(MockitoExtension.class)
-class BookServicesTest {
+class BookServiceTest {
 
     MockBook input;
 
     @InjectMocks
-    private BookServices service;
+    private BookService service;
 
     @Mock
     BookRepository repository;

@@ -1,0 +1,1 @@
+para esse projeto instalar e usar versão  4.51 do docker desktop
