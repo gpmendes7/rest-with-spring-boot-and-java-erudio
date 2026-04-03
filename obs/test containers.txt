@@ -1,0 +1,86 @@
+eu tenho uma aplicação spring poara rodar com testes containers. estou tentando gerar o jar com o maven package mas como o container ainda nao esta criado porque justamente preciso do jar nao consigo subir a aplciação
+
+
+Entendi o seu cenário: você tem uma aplicação Spring Boot, quer gerar o .jar com mvn package, mas está esbarrando no fato de que os testes usam Testcontainers — e como o container ainda não existe, o build falha antes mesmo de você ter o jar para subir.
+👉 Algumas estratégias comuns para resolver isso:
+1. Pular os testes na hora de empacotar
+Se o objetivo imediato é apenas gerar o jar, você pode rodar:
+mvn clean package -DskipTests
+
+
+ou
+mvn clean package -Dmaven.test.skip=true
+
+
+Assim o Maven não executa os testes que dependem dos containers.
+
+2. Perfil separado para Testcontainers
+Configure no pom.xml um profile específico para testes com containers.
+Exemplo:
+<profiles>
+    <profile>
+        <id>testcontainers</id>
+        <activation>
+            <activeByDefault>false</activeByDefault>
+        </activation>
+        <properties>
+            <skipTests>false</skipTests>
+        </properties>
+    </profile>
+</profiles>
+
+
+Aí você roda:
+mvn clean verify -Ptestcontainers
+
+
+quando quiser rodar os testes com containers, e mvn clean package normalmente para gerar o jar.
+
+3. Usar @Testcontainers com @Disabled em ambientes de build
+Se os testes são apenas de integração, você pode marcar alguns com @Disabled ou condicionar a execução via variável de ambiente.
+Por exemplo:
+@EnabledIfEnvironmentVariable(named = "RUN_TESTCONTAINERS", matches = "true")
+
+
+Assim, no CI ou localmente, você controla se os containers sobem ou não.
+
+4. Separar testes de unidade e integração
+- Unit tests: rodam sempre, rápidos, sem containers.
+- Integration tests: ficam em um módulo separado ou em src/it/java, rodando apenas quando você invoca mvn verify ou um profile específico.
+
+💡 Minha sugestão prática: se você só precisa do jar para subir a aplicação, rode com -DskipTests. Depois, quando quiser validar com containers, rode mvn verify ou configure um profile. Isso mantém o fluxo leve e evita travar o build.
+Quer que eu te mostre um exemplo de configuração de profiles no Maven para alternar entre build rápido e build com Testcontainers?
+
+isso basta Configure no pom.xml um profile específico para testes com containers. Exemplo:
+
+Perfeito, Gabriel! Vou te mostrar um exemplo de como configurar um profile no pom.xml para separar os testes com Testcontainers. Assim você consegue gerar o jar normalmente sem rodar os containers, e só ativa os testes quando quiser.
+Exemplo de configuração no pom.xml
+<profiles>
+    <!-- Profile padrão: não roda Testcontainers -->
+    <profile>
+        <id>default</id>
+        <activation>
+            <activeByDefault>true</activeByDefault>
+        </activation>
+        <properties>
+            <skipTests>true</skipTests>
+        </properties>
+    </profile>
+
+    <!-- Profile para rodar testes com Testcontainers -->
+    <profile>
+        <id>testcontainers</id>
+        <properties>
+            <skipTests>false</skipTests>
+        </properties>
+    </profile>
+</profiles>
+
+
+Como usar
+- Para gerar o jar sem testes:
+mvn clean package
+- (vai usar o profile default e pular os testes)
+- Para rodar os testes com Testcontainers:
+mvn clean verify -Ptestcontainers
+💡 Dica extra: se quiser mais controle, você pode usar uma property customizada (ex: -DrunTestcontainers=true) e condicionar a execução dos testes com @EnabledIfSystemProperty ou @EnabledIfEnvironmentVariable no JUnit. Isso evita ter que mexer em profiles toda hora.Quer que eu te mostre também como condicionar os testes no JUnit 5 para só rodarem quando a property runTestcontainers estiver ativa?
