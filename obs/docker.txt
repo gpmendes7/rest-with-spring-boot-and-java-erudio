@@ -1,3 +1,5 @@
+para esse projeto instalar e usar versão  4.51 do docker desktop
+
 docker --version
 
 docker run hello-world
@@ -17,3 +19,7 @@ docker tag hello-world gpm777/hello-world:0.0.1-SNAPSHOT
 docker login docker.io
 
 docker push gpm777/hello-world:0.0.1-SNAPSHOT
+
+docker compose up -d --build
+
+docker push gpm777/rest-with-spring-boot-erudio

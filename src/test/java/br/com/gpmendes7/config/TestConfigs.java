@@ -2,7 +2,7 @@ package br.com.gpmendes7.config;
 
 public interface TestConfigs {
 
-    int SERVER_PORT = 8888;
+    int SERVER_PORT = 80;
 
     String HEADER_PARAM_AUTHOTIZATION = "Authorization";
     String HEADER_PARAM_ORIGIN = "Origin";
