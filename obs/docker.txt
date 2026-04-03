@@ -23,3 +23,5 @@ docker push gpm777/hello-world:0.0.1-SNAPSHOT
 docker compose up -d --build
 
 docker push gpm777/rest-with-spring-boot-erudio
+
+docker tag gpm777/rest-with-spring-boot-erudio:latest gpm777/rest-with-spring-boot-erudio:gihjid
