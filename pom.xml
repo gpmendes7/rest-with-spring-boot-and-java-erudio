@@ -208,4 +208,27 @@
 		</plugins>
 	</build>
 
+    <profiles>
+        <!-- Profile padrão: build rápido sem testes -->
+        <profile>
+            <id>no-tests</id>
+            <activation>
+                <activeByDefault>true</activeByDefault>
+            </activation>
+            <properties>
+                <skipTests>true</skipTests>
+            </properties>
+        </profile>
+
+        <!-- Profile para rodar testes com Testcontainers -->
+        <profile>
+            <id>testcontainers</id>
+            <properties>
+                <skipTests>false</skipTests>
+                <!-- Você pode adicionar flags específicas aqui -->
+                <runTestcontainers>true</runTestcontainers>
+            </properties>
+        </profile>
+    </profiles>
+
 </project>

@@ -1,1 +1,11 @@
+- Gerar o jar sem testes (default):
+
 mvn clean package
+
+- (usa o profile no-tests automaticamente)
+
+- Rodar testes com Testcontainers:
+
+mvn clean verify -Ptestcontainers
+
+
