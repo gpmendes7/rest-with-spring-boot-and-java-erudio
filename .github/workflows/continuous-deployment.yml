@@ -6,7 +6,7 @@ on:
       - "main"
 
 jobs:
-  build:
+  build-and-test:
     runs-on: ubuntu-latest
 
     steps:
@@ -25,19 +25,22 @@ jobs:
           distribution: 'temurin'
           cache: maven
 
-      # Primeiro compila o projeto e gera o jar
+      # Compila o projeto sem rodar testes ainda
       - name: Build Application .jar
         working-directory: .
         run: mvn clean package -DskipTests
 
-      # Sobe os serviços necessários (ex: banco de dados) antes dos testes
+      # Sobe serviços auxiliares (ex: banco de dados) se necessário
       - name: Start services
         working-directory: .
         run: docker compose up -d
 
-      # Agora roda os testes de integração com a aplicação em DEFINED_PORT
+      # Sobe a aplicação em background na porta definida
+      - name: Start Application in Background
+        run: mvn spring-boot:run -Dspring-boot.run.profiles=test &
+
+      # Executa os testes de integração (agora com servidor ativo)
       - name: Run Integration Tests
-        working-directory: .
         run: mvn verify
 
       - name: Docker Compose Build
