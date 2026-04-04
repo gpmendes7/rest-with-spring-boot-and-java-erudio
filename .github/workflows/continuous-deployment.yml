@@ -25,9 +25,20 @@ jobs:
           distribution: 'temurin'
           cache: maven
 
+      # Primeiro compila o projeto e gera o jar
       - name: Build Application .jar
         working-directory: .
-        run: mvn clean package
+        run: mvn clean package -DskipTests
+
+      # Sobe os serviços necessários (ex: banco de dados) antes dos testes
+      - name: Start services
+        working-directory: .
+        run: docker compose up -d
+
+      # Agora roda os testes de integração com a aplicação em DEFINED_PORT
+      - name: Run Integration Tests
+        working-directory: .
+        run: mvn verify
 
       - name: Docker Compose Build
         working-directory: .
