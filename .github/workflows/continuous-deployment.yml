@@ -83,6 +83,37 @@ jobs:
           # Envia a imagem com tag do run ID para o ECR
           docker push ${{ secrets.IMAGE_REPO_URL }}:${{ github.run_id }}
 
+      # Baixa a definição da tarefa ECS existente do AWS para ser atualizada
+      - name: Download task definition
+        run: |
+          # Executa comando AWS para obter a definição da tarefa e salva em arquivo JSON
+          aws ecs describe-task-definition --task-definition ${{ secrets.TASK_DEFINITION_NAME }} --query taskDefinition > task-definition.json
+
+      # Atualiza a definição da tarefa ECS com a nova imagem Docker
+      - name: Fill in the new image ID in the Amazon ECS task definition
+        id: task-def
+        uses: aws-actions/amazon-ecs-render-task-definition@v1
+        with:
+          # Arquivo JSON contendo a definição da tarefa baixada
+          task-definition: task-definition.json
+          # Nome do container que será atualizado na definição
+          container-name: ${{ secrets.CONTAINER_NAME }}
+          # URL da nova imagem Docker a ser utilizada
+          image: ${{ secrets.IMAGE_REPO_URL }}:latest
+
+      # Faz o deploy da tarefa ECS atualizada no cluster AWS
+      - name: Deploy Amazon ECS task definition
+        uses: aws-actions/amazon-ecs-deploy-task-definition@v2
+        with:
+          # Definição da tarefa atualizada com a nova imagem
+          task-definition: ${{ steps.task-def.outputs.task-definition }}
+          # Nome do serviço ECS que será atualizado
+          service: ${{ secrets.SERVICE_NAME }}
+          # Cluster ECS onde o serviço será deployado
+          cluster: ${{ secrets.CLUSTER_NAME }}
+          # Aguarda a estabilização do serviço após o deploy
+          wait-for-service-stability: true
+
       # Envia a imagem Docker para o Docker Hub
       - name: Push to Docker Hub Container Registry
         run: |
