@@ -1,0 +1,9 @@
+erudio-db-server
+
+root
+
+admin123
+
+docker tag gpm777/rest-with-spring-boot-erudio:latest 211125327473.dkr.ecr.us-east-1.amazonaws.com/erudio/rest-with-spring-boot-erudio-ecr:latest
+
+docker push 211125327473.dkr.ecr.us-east-1.amazonaws.com/erudio/rest-with-spring-boot-erudio-ecr:latest
