@@ -100,12 +100,14 @@ jobs:
           container-name: ${{ secrets.CONTAINER_NAME }}
           # URL da nova imagem Docker a ser utilizada
           image: ${{ secrets.IMAGE_REPO_URL }}:latest
-          # Adiciona variáveis de ambiente para conexão com o banco (substitua pelos secrets reais do GitHub)
+          # Adiciona variáveis de ambiente para conexão com o banco RDS com SSL habilitado
           container-env-vars: |
             SPRING_PROFILES_ACTIVE=prod
-            JDBC_URL=jdbc:mysql://${{ secrets.DB_HOST }}:3306/${{ secrets.DB_NAME }}?useTimezone=true&serverTimezone=UTC
-            USERNAME_DATABASE=${{ secrets.DB_USER }}
-            PASSWORD_DATABASE=${{ secrets.DB_PASSWORD }}
+            SPRING_DATASOURCE_URL=jdbc:mysql://${{ secrets.DB_HOST }}:3306/${{ secrets.DB_NAME }}?useTimezone=true&serverTimezone=UTC&useSSL=true&requireSSL=true&sslMode=VERIFY_IDENTITY
+            SPRING_DATASOURCE_USERNAME=${{ secrets.DB_USER }}
+            SPRING_DATASOURCE_PASSWORD=${{ secrets.DB_PASSWORD }}
+            EMAIL_USERNAME=${{ secrets.EMAIL_USERNAME }}
+            EMAIL_PASSWORD=${{ secrets.EMAIL_PASSWORD }}
 
       # Faz o deploy da tarefa ECS atualizada no cluster AWS
       - name: Deploy Amazon ECS task definition
