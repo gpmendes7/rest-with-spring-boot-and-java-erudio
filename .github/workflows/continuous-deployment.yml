@@ -100,6 +100,13 @@ jobs:
           container-name: ${{ secrets.CONTAINER_NAME }}
           # URL da nova imagem Docker a ser utilizada
           image: ${{ secrets.IMAGE_REPO_URL }}:latest
+          # Adiciona variáveis de ambiente para conexão com o banco (substitua pelos secrets reais do GitHub)
+          container-env-vars: |
+            SPRING_PROFILES_ACTIVE=prod
+            DB_HOST=${{ secrets.DB_HOST }}
+            DB_USER=${{ secrets.DB_USER }}
+            DB_PASSWORD=${{ secrets.DB_PASSWORD }}
+            DB_NAME=${{ secrets.DB_NAME }}
 
       # Faz o deploy da tarefa ECS atualizada no cluster AWS
       - name: Deploy Amazon ECS task definition
@@ -113,6 +120,18 @@ jobs:
           cluster: ${{ secrets.CLUSTER_NAME }}
           # Aguarda a estabilização do serviço após o deploy
           wait-for-service-stability: true
+
+      # Adiciona um passo para verificar a conectividade com o banco após o deploy
+      - name: Verify Database Connectivity
+        run: |
+          # Aguarda alguns segundos para o serviço estabilizar
+          sleep 30
+          # Executa um teste simples de conectividade (ajuste o comando conforme sua aplicação, ex.: curl para endpoint de health check)
+          # Exemplo: curl -f http://your-ecs-service-endpoint/health || exit 1
+          # Substitua pelo seu endpoint real ou comando de teste
+          echo "Verificando conectividade com o banco via health check..."
+          # Se falhar, o job falhará e você pode configurar rollback manual ou automático
+          aws ecs describe-services --cluster ${{ secrets.CLUSTER_NAME }} --services ${{ secrets.SERVICE_NAME }} --query 'services[0].taskDefinition' --output text
 
       # Envia a imagem Docker para o Docker Hub
       - name: Push to Docker Hub Container Registry
